@@ -485,7 +485,7 @@ function CustomPIXIComponent(behavior, type) {
 
 /* API */
 
-export { CustomPIXIComponent, Stage, render };
+export { CustomPIXIComponent, Stage, applyProps, render };
 
 export const BitmapText = TYPES.BITMAP_TEXT;
 export const Container = TYPES.CONTAINER;
