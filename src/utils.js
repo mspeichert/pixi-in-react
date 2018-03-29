@@ -1,6 +1,6 @@
 import invariant from "fbjs/lib/invariant";
 import * as PIXI from "pixi.js";
-import { RESERVED_PROPS } from "./props";
+import { getStackAddendum } from "./ReactGlobalSharedState";
 
 /* Helper Methods */
 
@@ -19,10 +19,6 @@ export function filterByKey(inputObject, filter) {
 
   return exportObject;
 }
-
-/* Concrete Helper Methods */
-
-export const includingReservedProps = including(Object.keys(RESERVED_PROPS));
 
 /* PIXI related Methods */
 
@@ -55,6 +51,7 @@ export function isPointType(value) {
 // coordinate and index 1 being the y coordinate.
 // See: https://github.com/Izzimach/react-pixi/blob/a25196251a13ed9bb116a8576d93e9fceac2a14c/src/ReactPIXI.js#L114
 export function setPixiValue(instance, propName, value) {
+  // console.warn(instance, propName, value);
   if (isPointType(instance[propName]) && isPointType(value)) {
     // Just copy the data if a Point type is being assigned to a Point type
     instance[propName].copy(value);
@@ -66,10 +63,9 @@ export function setPixiValue(instance, propName, value) {
       typeof coordinateData !== "undefined" && coordinateData.length > 0 && coordinateData.length < 3,
       "The property `%s` is a PIXI.Point or PIXI.ObservablePoint and must be set to a comma-separated string of " +
         "either 1 or 2 coordinates, a 1 or 2 element array containing coordinates, or a PIXI Point/ObservablePoint. " +
-        "If only one coordinate is given then X and Y will be set to the provided value. Received: `%s` of type `%s`.",
+        "If only one coordinate is given then X and Y will be set to the provided value.%s",
       propName,
-      JSON.stringify(value),
-      typeof value
+      getStackAddendum()
     );
 
     instance[propName].set(coordinateData.shift(), coordinateData.shift());

@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import * as PIXI from "pixi.js";
 import { AppProvider } from "./AppProvider";
 import { DEFAULT_PROPS } from "./props";
-import { applyProps } from "./ReactPixiFiber";
 import { render, unmount } from "./render";
+import { TYPES } from "./types";
 import { filterByKey, including } from "./utils";
+import { diffProperties, setInitialProperties, updateProperties } from "./ReactPixiFiberComponent";
 
 export function validateCanvas(props, propName, componentName) {
   // Let's assume that element is canvas if the element is Element and implements getContext
@@ -68,7 +69,7 @@ class Stage extends React.Component {
 
     // Apply root Container props
     const stageProps = getDisplayObjectProps(this.props);
-    applyProps(this._app.stage, {}, stageProps);
+    setInitialProperties(TYPES.CONTAINER, this._app.stage, stageProps);
 
     render(<AppProvider app={this._app}>{children}</AppProvider>, this._app.stage, undefined, this);
   }
@@ -78,8 +79,12 @@ class Stage extends React.Component {
     const { options: prevOptions } = prevProps;
 
     // Apply root Container props
-    const stageProps = getDisplayObjectProps(this.props);
-    applyProps(this._app.stage, {}, stageProps);
+    const lastStageProps = getDisplayObjectProps(prevProps);
+    const nextStageProps = getDisplayObjectProps(this.props);
+    const updatePayload = diffProperties(TYPES.CONTAINER, this._app.stage, lastStageProps, nextStageProps);
+    if (updatePayload !== null) {
+      updateProperties(TYPES.CONTAINER, this._app.stage, updatePayload);
+    }
 
     // Root container has been resized - resize renderer
     const currentHeight = (options && options.height) || height;

@@ -75,7 +75,10 @@
     "eslint": "eslint src",
     "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "prepublishOnly": "npm run test && npm run build",
-    "test": "jest",
+    "test": "npm run test:dev && npm run test:prod",
+    "test:cov": "npm run test:dev -- --coverage && npm run test:prod -- --coverage && node mapCoverage.js",
+    "test:dev": "jest -c config/jest.dev.json",
+    "test:prod": "jest -c config/jest.prod.json",
     "test:ts": "tsc -p tsconfig.json"
   },
   "jest": {
