@@ -9,9 +9,17 @@ module.exports = function(wallaby) {
       type: "node",
       runner: "node",
     },
-    // https://wallabyjs.com/docs/integration/jest.html
     testFramework: "jest",
-    // https://medium.com/@artem.govorov/jest-snapshot-testing-on-steroids-with-wallaby-js-a53008f619f0
-    // https://github.com/wallabyjs/public/issues/870
+    setup: function(wallaby) {
+      wallaby.testFramework.configure({
+        globals: {
+          __DEV__: true,
+        },
+        setupFiles: ["./test/jest.setupPixi.js"],
+        transform: {
+          "^.+\\.js$": "babel-jest",
+        },
+      });
+    },
   };
 };
