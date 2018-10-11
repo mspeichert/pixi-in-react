@@ -28,7 +28,10 @@ class RotatingBunny extends Component {
   };
 
   render() {
-    return <Bunny {...this.props} rotation={this.state.rotation} />;
+    // we don't want to pass app prop further down, it will trigger dev warning
+    const { app, ...passedProps } = this.props;
+
+    return <Bunny {...passedProps} rotation={this.state.rotation} />;
   }
 }
 RotatingBunny.propTypes = {
