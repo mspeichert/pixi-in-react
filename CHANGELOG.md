@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Added ReactDOM-like prop validation in development ([#47])
+
 
 ## [0.6.1] - 2018-11-10
 
