@@ -1,5 +1,5 @@
-import CustomPIXIComponent from "../src/CustomPIXIComponent";
-import { injectType } from "../src/inject";
+import CustomPIXIComponent from "../src/dep/CustomPIXIComponent";
+import { injectType } from "../src/dep/inject";
 
 jest.mock("../src/inject");
 

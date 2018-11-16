@@ -5,7 +5,7 @@ import now from "performance-now";
 import * as PIXI from "pixi.js";
 import { createInjectedTypeInstance, isInjectedType } from "./inject";
 import { CHILDREN, DEFAULT_PROPS } from "./props";
-import { TYPES } from "./types";
+import { TYPES } from "../types";
 import { filterByKey, including, includingReservedProps, not, setPixiValue } from "./utils";
 
 /* Render Methods */
@@ -201,13 +201,6 @@ export function prepareUpdate(pixiElement, type, oldProps, newProps, rootContain
   return diffProps(pixiElement, type, oldProps, newProps, rootContainerInstance);
 }
 
-export function resetAfterCommit() {
-  // Noop
-}
-
-export function resetTextContent(pixiElement) {
-  // Noop
-}
 
 export function shouldDeprioritizeSubtree(type, props) {
   const isAlphaVisible = typeof props.alpha === "undefined" || props.alpha > 0;
@@ -221,13 +214,6 @@ export function shouldSetTextContent(type, props) {
   return false;
 }
 
-export function commitTextUpdate(textInstance, oldText, newText) {
-  // Noop
-}
-
-export function commitMount(instance, type, newProps) {
-  // Noop
-}
 
 export const supportsMutation = true;
 
@@ -235,8 +221,6 @@ const hostConfig = {
   appendChild: appendChild,
   appendChildToContainer: appendChild,
   appendInitialChild: appendChild,
-  commitMount: commitMount,
-  commitTextUpdate: commitTextUpdate,
   commitUpdate: commitUpdate,
   createInstance: createInstance,
   createTextInstance: createTextInstance,
@@ -251,8 +235,6 @@ const hostConfig = {
   prepareUpdate: prepareUpdate,
   removeChild: removeChild,
   removeChildFromContainer: removeChild,
-  resetAfterCommit: resetAfterCommit,
-  resetTextContent: resetTextContent,
   shouldDeprioritizeSubtree: shouldDeprioritizeSubtree,
   shouldSetTextContent: shouldSetTextContent,
   supportsMutation: supportsMutation,

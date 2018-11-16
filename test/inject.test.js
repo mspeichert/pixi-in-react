@@ -1,5 +1,5 @@
-import { injectType } from "../src/ReactPixiFiber";
-import { INJECTED_TYPES, createInjectedTypeInstance, isInjectedType } from "../src/inject";
+import { injectType } from "../src/dep/ReactPixiFiber";
+import { INJECTED_TYPES, createInjectedTypeInstance, isInjectedType } from "../src/dep/inject";
 
 jest.mock("../src/ReactPixiFiber");
 
@@ -11,7 +11,7 @@ describe("inject", () => {
 
   describe("injectType", () => {
     it("should add type to INJECTED_TYPES", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       const behavior = {};
       expect(inject.INJECTED_TYPES).not.toHaveProperty(type);
@@ -31,7 +31,7 @@ describe("inject", () => {
       expect(createInjectedTypeInstance("NON_EXISTENT_TYPE", {})).toBeUndefined();
     });
     it("throws when passed incompatible behavior", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       // incompatible behavior
       const behavior = {};
@@ -39,7 +39,7 @@ describe("inject", () => {
       expect(() => inject.createInjectedTypeInstance(type)).toThrow();
     });
     it("returns an instance of type if type is in INJECTED_TYPES (with simple behavior)", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       // just return the type name
       const customDisplayObject = () => type;
@@ -48,7 +48,7 @@ describe("inject", () => {
       expect(inject.createInjectedTypeInstance(type)).toEqual(customDisplayObject());
     });
     it("returns an instance of type if type is in INJECTED_TYPES (with full behavior)", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       const behavior = {
         // customDisplayObject will just return the type name
@@ -59,7 +59,7 @@ describe("inject", () => {
       expect(inject.createInjectedTypeInstance(type)).toEqual(behavior.customDisplayObject());
     });
     it("calls type constructor with props", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       const customDisplayObject = jest.fn();
       inject.injectType(type, customDisplayObject);
@@ -69,7 +69,7 @@ describe("inject", () => {
       expect(customDisplayObject).toHaveBeenCalledWith(props);
     });
     it("attaches custom behavior to created instance", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       const behavior = {
         customDisplayObject: () => ({}),
@@ -101,7 +101,7 @@ describe("inject", () => {
 
   describe("isInjectedType", () => {
     it("returns true if type is injected", () => {
-      const inject = require("../src/inject");
+      const inject = require("../src/dep/inject");
       const type = "INJECTED_TYPE";
       const behavior = () => ({});
       inject.injectType(type, behavior);

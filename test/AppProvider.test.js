@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import renderer from "react-test-renderer";
-import { AppContext, AppProvider, Container, Stage, withApp } from "../src";
-import { render } from "../src/render";
+import { AppContext, AppProvider, Container, Stage, withApp } from "../src/dep/index";
+import { render } from "../src/dep/render";
 import * as PIXI from "pixi.js";
 
 if (typeof React.createContext === "function") {

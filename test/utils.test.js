@@ -7,8 +7,8 @@ import {
   not,
   parsePoint,
   setPixiValue,
-} from "../src/utils";
-import { RESERVED_PROPS } from "../src/props";
+} from "../src/dep/utils";
+import { RESERVED_PROPS } from "../src/dep/props";
 
 describe("not", () => {
   it("returns a function", () => {

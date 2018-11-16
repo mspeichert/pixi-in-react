@@ -1,4 +1,4 @@
-import { CHILDREN, DEFAULT_PROPS, RESERVED_PROPS } from "../src/props";
+import { CHILDREN, DEFAULT_PROPS, RESERVED_PROPS } from "../src/dep/props";
 
 describe("props", () => {
   describe("CHILDREN", () => {

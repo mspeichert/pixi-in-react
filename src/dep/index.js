@@ -1,7 +1,7 @@
 import CustomPIXIComponent from "./CustomPIXIComponent";
 import { AppContext, AppProvider, withApp } from "./AppProvider";
 import Stage from "./Stage";
-import { TYPES } from "./types";
+import { TYPES } from "../types";
 import { render } from "./render";
 
 /* Public API */

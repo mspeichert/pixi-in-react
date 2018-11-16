@@ -1,8 +1,8 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import * as PIXI from "pixi.js";
-import { Text } from "../src/index";
-import ReactPixiFiber from "../src/ReactPixiFiber";
+import { Text } from "../src/dep/index";
+import ReactPixiFiber from "../src/dep/ReactPixiFiber";
 import Stage, {
   getCanvasProps,
   getDisplayObjectProps,
@@ -10,10 +10,10 @@ import Stage, {
   includingDisplayObjectProps,
   includingStageProps,
   validateCanvas,
-} from "../src/Stage";
-import { render, unmount } from "../src/render";
-import { AppProvider } from "../src/AppProvider";
-import { DEFAULT_PROPS } from "../src/props";
+} from "../src/dep/Stage";
+import { render, unmount } from "../src/dep/render";
+import { AppProvider } from "../src/dep/AppProvider";
+import { DEFAULT_PROPS } from "../src/dep/props";
 
 jest.mock("../src/ReactPixiFiber", () => {
   return Object.assign({}, require.requireActual("../src/ReactPixiFiber"), {

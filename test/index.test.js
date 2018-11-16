@@ -1,4 +1,4 @@
-import * as ReactPixiFiber from "../src/index";
+import * as ReactPixiFiber from "../src/dep/index";
 
 describe("ReactPixiFiber public API", () => {
   it("provides expected utils", () => {

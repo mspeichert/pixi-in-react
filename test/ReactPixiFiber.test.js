@@ -1,10 +1,10 @@
 import emptyObject from "fbjs/lib/emptyObject";
 import * as PIXI from "pixi.js";
-import * as ReactPixiFiber from "../src/ReactPixiFiber";
-import { __RewireAPI__ as ReactPixiFiberRewireAPI } from "../src/ReactPixiFiber";
-import { DEFAULT_PROPS } from "../src/props";
+import * as ReactPixiFiber from "../src/dep/ReactPixiFiber";
+import { __RewireAPI__ as ReactPixiFiberRewireAPI } from "../src/dep/ReactPixiFiber";
+import { DEFAULT_PROPS } from "../src/dep/props";
 import { TYPES } from "../src/types";
-import * as utils from "../src/utils";
+import * as utils from "../src/dep/utils";
 
 jest.mock("pixi.js", () => {
   return Object.assign({}, require.requireActual("pixi.js"), {

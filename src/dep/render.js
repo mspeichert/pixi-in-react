@@ -1,6 +1,6 @@
-import pkg from "../package.json";
+import pkg from "../../package.json";
 import invariant from "fbjs/lib/invariant";
-import { ReactPixiFiberAsPrimaryRenderer as ReactPixiFiber } from "../src/ReactPixiFiber";
+import { ReactPixiFiberAsPrimaryRenderer as ReactPixiFiber } from "./ReactPixiFiber";
 
 export const roots = new Map();
 
