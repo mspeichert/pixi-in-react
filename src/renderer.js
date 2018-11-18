@@ -1,4 +1,4 @@
-import Reconciler from 'react-reconciler'
+import ReactReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import now from 'performance-now'
 import { LIB_NAME, PIXI_INSTANCE_DEFAULTS } from 'src/constants'
@@ -44,13 +44,76 @@ const applyProps = (instance, props) => {
     })
 }
 
-const appendChild = () => {}
+const diffProps = (element, type, oldProps, newProps) => {
+  let updatePayload = [] // TODO check if it has to be an array
+  Object.keys(oldProps).forEach(key => {
+    if (key === 'children') return
+    if(!newProps.hasOwnProperty(key)){ // eslint-disable-line
+      updatePayload.push(key, null) // prop that disappeared
+    }
+  })
+
+  Object.keys(newProps).forEach(key => {
+    if (key === 'children') return
+    const value = newProps[key]
+    if(!oldProps.hasOwnProperty(key) || value !== oldProps[key]){ // eslint-disable-line
+      updatePayload.push(key, value) // new prop or changed prop
+    }
+  })
+
+  if (!updatePayload.length) return null
+  return updatePayload
+}
+
+const appendChild = (parent, child) => {
+  console.log(parent) // TODO remove
+  parent.addChild(child)
+}
+
+const removeChild = (parent, child) => {
+  parent.removeChild(child)
+  child.destroy()
+}
+
+const commitUpdate = (instance, updatePayload, type, oldProps, newProps) => {
+  const updatedPropKeys = updatePayload.filter((item, i) => i % 2 === 0)
+  const filteredProps = {}
+  Object.keys(newProps)
+    .filter(item => !updatedPropKeys.includes(item))
+    .forEach(key => {
+      filteredProps[key] = newProps[key]
+    })
+  applyProps(instance, filteredProps)
+}
+
+const shouldDeprioritizeSubtree = (type, props) => {
+  const isAlphaVisible = typeof props.alpha === 'undefined' || props.alpha > 0
+  const isRenderable =
+    typeof props.renderable === 'undefined' || props.renderable === true
+  const isVisible =
+    typeof props.visible === 'undefined' || props.visible === true
+
+  return !(isAlphaVisible && isRenderable && isVisible)
+}
+
+const insertBefore = (parent, child, before) => {
+  invariant(child !== before, 'Cannot insert node before itself')
+
+  const childExists = parent.children.indexOf(child) !== -1
+  const index = parent.getChildIndex(before)
+
+  if (childExists) {
+    parent.setChildIndex(child, index)
+  } else {
+    parent.addChildAt(child, index)
+  }
+}
 
 const hostConfig = {
   now,
   getRootHostContext: returnEmpty,
   getChildHostContext: returnEmpty,
-  prepareForCommit: noop,
+  getPublicInstance: inst => inst,
   resetAfterCommit: noop,
   shouldSetTextContent: returnFalse,
   finalizeInitialChildren: returnFalse,
@@ -90,7 +153,18 @@ const hostConfig = {
   appendChild,
   appendInitialChild: appendChild,
   appendChildToContainer: appendChild,
+  removeChild,
+  removeChildFromContainer: removeChild,
+  commitUpdate,
+  prepareUpdate: diffProps,
+  prepareForCommit: noop,
+  shouldDeprioritizeSubtree,
+  insertBefore,
+  insertInContainerBefore: insertBefore,
   supportsMutation: true,
+  isPrimaryRenderer: false,
 }
+
+const Reconciler = ReactReconciler(hostConfig)
 
 export default (element, domElement, callback) => {}

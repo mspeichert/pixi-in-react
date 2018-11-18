@@ -52,7 +52,7 @@ export function diffProps(pixiElement, type, lastRawProps, nextRawProps, rootCon
   let propKey;
 
   for (propKey in lastProps) {
-    if (nextProps.hasOwnProperty(propKey) || !lastProps.hasOwnProperty(propKey) || lastProps[propKey] == null) {
+    if (nextProps.hasOwnProperty(propKey) || lastProps[propKey] == null) {
       continue;
     }
     if (propKey === CHILDREN) {
@@ -66,7 +66,7 @@ export function diffProps(pixiElement, type, lastRawProps, nextRawProps, rootCon
   for (propKey in nextProps) {
     const nextProp = nextProps[propKey];
     const lastProp = lastProps != null ? lastProps[propKey] : undefined;
-    if (!nextProps.hasOwnProperty(propKey) || nextProp === lastProp || (nextProp == null && lastProp == null)) {
+    if (nextProp === lastProp || (nextProp == null && lastProp == null)) {
       continue;
     }
     if (propKey === CHILDREN) {
