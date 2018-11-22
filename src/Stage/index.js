@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import * as PIXI from 'pixi.js'
-import { applyProps } from 'src/dep/ReactPixiFiber'
-import { validateCanvas } from 'src/dep/Stage'
-import { AppProvider, render } from 'src/dep'
-import { filterByKey, including } from 'src/dep/utils'
-import { DEFAULT_PROPS } from 'src/dep/props'
+import render from '../renderer'
 
 const propTypes = {
   options: PropTypes.shape({
@@ -24,7 +20,6 @@ const propTypes = {
     sharedLoader: PropTypes.bool,
     sharedTicker: PropTypes.bool,
     transparent: PropTypes.bool,
-    view: validateCanvas,
     width: PropTypes.number,
   }),
   children: PropTypes.node.isRequired,
@@ -33,44 +28,23 @@ const propTypes = {
 }
 
 const Stage = ({ children, height, width, options }) => {
-  // const [app, setApp] = useState(null)
+  const [app, setApp] = useState(null)
   const canvas = useRef(null)
 
   useEffect(() => {
-    let app = new PIXI.Application({
-      height,
-      width,
-      view: canvas,
-      ...options,
-    })
-
-    render(
-      <AppProvider app={app}>{children}</AppProvider>,
-      app.stage,
-      undefined,
-      this
-    )
-  }, [])
-
-  // useEffect(() => {
-  //   if (!app) {
-  //     setApp(
-  //       new PIXI.Application({
-  //         height,
-  //         width,
-  //         view: canvas,
-  //         ...options,
-  //       })
-  //     )
-  //   } else {
-  //     render(
-  //       <AppProvider app={app}>{children}</AppProvider>,
-  //       app.stage,
-  //       undefined,
-  //       this
-  //     )
-  //   }
-  // })
+    if (!app) {
+      setApp(
+        new PIXI.Application({
+          height,
+          width,
+          view: canvas.current,
+          ...options,
+        })
+      )
+    } else {
+      render(children, app.stage, undefined, this)
+    }
+  })
 
   useEffect(
     () => {

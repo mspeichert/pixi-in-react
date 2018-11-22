@@ -1,9 +1,9 @@
 import ReactReconciler from 'react-reconciler'
+import * as PIXI from 'pixi.js'
 import invariant from 'fbjs/lib/invariant'
 import now from 'performance-now'
-import { LIB_NAME, PIXI_INSTANCE_DEFAULTS } from 'src/constants'
-import { TYPES } from 'src/types'
-import * as PIXI from 'pixi.js'
+import { LIB_NAME, PIXI_INSTANCE_DEFAULTS } from './constants'
+import { TYPES } from './types'
 
 const noop = () => {}
 const returnEmpty = () => ({})
@@ -26,30 +26,31 @@ const setPixiValue = (instance, key, value) => {
 }
 
 const applyProps = (instance, props) => {
-  Object.keys(this.props)
+  Object.keys(props)
     .filter(key => key !== 'children')
     .forEach(key => {
       const value = props[key]
-      if (value) setPixiValue(instance, key, value)
+      if (value !== undefined) setPixiValue(instance, key, value)
       else if (
         typeof instance[key] !== 'undefined' &&
         PIXI_INSTANCE_DEFAULTS[key]
       ) {
         setPixiValue(instance, key, PIXI_INSTANCE_DEFAULTS[key])
-      } else if (__DEV__)
+      } else {
         console.warn(
           `Prop ${key} with value ${value} was not applied to instance`,
           instance
         )
+      }
     })
 }
 
 const diffProps = (element, type, oldProps, newProps) => {
-  let updatePayload = [] // TODO check if it has to be an array
+  let updatePayload = {}
   Object.keys(oldProps).forEach(key => {
     if (key === 'children') return
     if(!newProps.hasOwnProperty(key)){ // eslint-disable-line
-      updatePayload.push(key, null) // prop that disappeared
+      updatePayload[key] = null // prop that disappeared
     }
   })
 
@@ -57,16 +58,16 @@ const diffProps = (element, type, oldProps, newProps) => {
     if (key === 'children') return
     const value = newProps[key]
     if(!oldProps.hasOwnProperty(key) || value !== oldProps[key]){ // eslint-disable-line
-      updatePayload.push(key, value) // new prop or changed prop
+      updatePayload[key] = newProps[key] // new prop or changed prop
     }
   })
-
-  if (!updatePayload.length) return null
+  // console.log(updatePayload)
+  if (!Object.keys(updatePayload).length) return null
   return updatePayload
 }
 
 const appendChild = (parent, child) => {
-  console.log(parent) // TODO remove
+  // console.log(parent) // TODO remove
   parent.addChild(child)
 }
 
@@ -75,15 +76,8 @@ const removeChild = (parent, child) => {
   child.destroy()
 }
 
-const commitUpdate = (instance, updatePayload, type, oldProps, newProps) => {
-  const updatedPropKeys = updatePayload.filter((item, i) => i % 2 === 0)
-  const filteredProps = {}
-  Object.keys(newProps)
-    .filter(item => !updatedPropKeys.includes(item))
-    .forEach(key => {
-      filteredProps[key] = newProps[key]
-    })
-  applyProps(instance, filteredProps)
+const commitUpdate = (instance, updatePayload) => {
+  applyProps(instance, updatePayload)
 }
 
 const shouldDeprioritizeSubtree = (type, props) => {
@@ -167,4 +161,22 @@ const hostConfig = {
 
 const Reconciler = ReactReconciler(hostConfig)
 
-export default (element, domElement, callback) => {}
+const roots = new Map() // TODO
+
+export default (element, containerTag, callback, parent) => {
+  // console.log(arguments)
+  let root = roots.get(containerTag)
+  if (!root) {
+    root = Reconciler.createContainer(containerTag)
+    roots.set(containerTag, root)
+  }
+
+  Reconciler.updateContainer(element, root, parent, callback)
+
+  return Reconciler.getPublicRootInstance(root)
+}
+
+export const unmount = tag => {
+  const root = roots.get(tag)
+  Reconciler.updateContainer(null, root)
+}

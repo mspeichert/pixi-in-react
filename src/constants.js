@@ -1,6 +1,5 @@
 export const LIB_NAME = '?'
 
-
 export const PIXI_INSTANCE_DEFAULTS = {
   alpha: 1,
   buttonMode: false,
