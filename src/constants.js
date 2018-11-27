@@ -1,10 +1,10 @@
-export const LIB_NAME = '?'
+export const LIB_NAME = 'pixi-in-react'
 
 export const PIXI_INSTANCE_DEFAULTS = {
   alpha: 1,
   buttonMode: false,
   cacheAsBitmap: false,
-  cursor: "auto",
+  cursor: 'auto',
   filterArea: null,
   filters: null,
   hitArea: null,
@@ -20,4 +20,4 @@ export const PIXI_INSTANCE_DEFAULTS = {
   visible: true,
   x: 0,
   y: 0,
-};
+}

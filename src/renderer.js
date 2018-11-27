@@ -1,6 +1,6 @@
 import ReactReconciler from 'react-reconciler'
 import * as PIXI from 'pixi.js'
-import invariant from 'fbjs/lib/invariant'
+import invariant from 'tiny-invariant'
 import now from 'performance-now'
 import { LIB_NAME, PIXI_INSTANCE_DEFAULTS } from './constants'
 import { TYPES } from './types'
@@ -174,9 +174,4 @@ export default (element, containerTag, callback, parent) => {
   Reconciler.updateContainer(element, root, parent, callback)
 
   return Reconciler.getPublicRootInstance(root)
-}
-
-export const unmount = tag => {
-  const root = roots.get(tag)
-  Reconciler.updateContainer(null, root)
 }

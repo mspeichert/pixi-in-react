@@ -55,7 +55,7 @@ const Stage = ({ children, height, width, options }) => {
     [width, height]
   )
 
-  if (options?.view) return null
+  if (options.view) return null
   return <canvas ref={canvas} />
 }
 
