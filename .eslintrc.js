@@ -108,6 +108,8 @@ module.exports = {
 
     'react/no-unused-prop-types': 'warn',
 
+    'react/no-array-index-key': 'warn',
+
     'react/self-closing-comp': 'warn',
 
     'react/jsx-one-expression-per-line': 'off',

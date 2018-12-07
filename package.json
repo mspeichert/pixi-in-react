@@ -1,6 +1,6 @@
 {
   "name": "pixi-in-react",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "PixiJS in as React components",
   "author": "Mikolaj Speuchert",
   "license": "MIT",
@@ -14,8 +14,9 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "performance-now": "^2.1.0",
-    "react-reconciler": "^0.17.2",
-    "tiny-invariant": "^1.0.3"
+    "react-reconciler": "^0.18.0-alpha.2",
+    "tiny-invariant": "^1.0.3",
+    "webpack": "^4.19.1"
   },
   "peerDependencies": {
     "pixi.js": "^4.8.2",
@@ -33,11 +34,10 @@
     "babel-plugin-dev-expression": "^0.2.1",
     "@types/pixi.js": "^4.8.3",
     "@types/react": "^16.7.7",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "9.0.0",
     "babel-jest": "^23.6.0",
-    "canvas-prebuilt": "^2.0.0-alpha.14",
     "codecov": "^3.1.0",
-    "eslint": "^5.9.0",
+    "eslint": "5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-import-resolver-node": "^0.3.2",
@@ -67,12 +67,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development rollup -c config/rollup.config.js",
     "prebuild": "rimraf dist",
-    "build": "cross-env NODE_ENV=production rollup -c config/rollup.config.js && cp ./index.js ./dist/index.js",
-    "eslint": "eslint src",
-    "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
-    "prepublishOnly": "npm run test && npm run build",
-    "test": "jest",
-    "test:ts": "tsc -p tsconfig.json"
+    "build": "cross-env NODE_ENV=production rollup -c config/rollup.config.js && cp ./index.js ./dist/index.js"
   },
   "jest": {
     "coverageDirectory": "coverage",

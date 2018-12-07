@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import * as PIXI from 'pixi.js'
 import render from '../renderer'
@@ -32,21 +32,17 @@ const Stage = ({ children, height, width, options }) => {
   const canvas = useRef(null)
 
   useEffect(() => {
-    if (!app) {
-      setApp(
-        new PIXI.Application({
-          height,
-          width,
-          view: canvas.current,
-          ...options,
-        })
-      )
-    } else {
-      render(children, app.stage, undefined, this)
-    }
-  })
+    setApp(
+      new PIXI.Application({
+        height,
+        width,
+        view: canvas.current,
+        ...options,
+      })
+    )
+  }, [])
 
-  useEffect(
+  useLayoutEffect(
     () => {
       if (app) {
         app.renderer.resize(width, height)
@@ -54,6 +50,10 @@ const Stage = ({ children, height, width, options }) => {
     },
     [width, height]
   )
+
+  if (app) {
+    render(children, app.stage, undefined, this)
+  }
 
   if (options.view) return null
   return <canvas ref={canvas} />

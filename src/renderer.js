@@ -164,7 +164,6 @@ const Reconciler = ReactReconciler(hostConfig)
 const roots = new Map() // TODO
 
 export default (element, containerTag, callback, parent) => {
-  // console.log(arguments)
   let root = roots.get(containerTag)
   if (!root) {
     root = Reconciler.createContainer(containerTag)
