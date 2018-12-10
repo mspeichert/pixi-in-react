@@ -6396,10 +6396,10 @@ pixi-gl-core@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/pixi-gl-core/-/pixi-gl-core-1.1.4.tgz#8b4b5c433b31e419bc379dc565ce1b835a91b372"
 
-pixi-in-react@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/pixi-in-react/-/pixi-in-react-0.0.3.tgz#0c4c15e6e2e32d609744359047538e6ac510c6ee"
-  integrity sha512-iGKvnYZNtthNtyOvFO4R9spEawuT/b5k100gkVHFKjoJbPuOY+uesHoAB7Hii6za1cU1jDeg0eRtcwnRC8/ppw==
+pixi-in-react@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/pixi-in-react/-/pixi-in-react-0.0.4.tgz#7f38ce4f3a4b7be4383d0090f1b6422fb2055e35"
+  integrity sha512-lPRgor476tqrvsqDUKSlFgACurpfif0E/Engg10JdWZaC2ImFY8XTZn5T3WdWBZvHq4cvJaqtUfKzlky0zjHnw==
   dependencies:
     "@babel/runtime" "^7.1.5"
     performance-now "^2.1.0"

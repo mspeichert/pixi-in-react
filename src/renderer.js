@@ -2,12 +2,15 @@ import ReactReconciler from 'react-reconciler'
 import * as PIXI from 'pixi.js'
 import invariant from 'tiny-invariant'
 import now from 'performance-now'
+import pkg from '../package.json'
 import { LIB_NAME, PIXI_INSTANCE_DEFAULTS } from './constants'
 import { TYPES } from './types'
 
 const noop = () => {}
 const returnEmpty = () => ({})
 const returnFalse = () => false
+
+const filteredProps = ['children', 'behavior']
 
 function isPointType(value) {
   return value instanceof PIXI.Point || value instanceof PIXI.ObservablePoint
@@ -26,48 +29,54 @@ const setPixiValue = (instance, key, value) => {
 }
 
 const applyProps = (instance, props) => {
-  Object.keys(props)
-    .filter(key => key !== 'children')
-    .forEach(key => {
-      const value = props[key]
-      if (value !== undefined) setPixiValue(instance, key, value)
-      else if (
-        typeof instance[key] !== 'undefined' &&
-        PIXI_INSTANCE_DEFAULTS[key]
-      ) {
-        setPixiValue(instance, key, PIXI_INSTANCE_DEFAULTS[key])
-      } else {
-        console.warn(
-          `Prop ${key} with value ${value} was not applied to instance`,
-          instance
-        )
-      }
-    })
+  if (props.behavior && props.behavior.applyProps) {
+    props.behavior.applyProps(instance, props)
+  } else {
+    Object.keys(props)
+      .filter(key => !filteredProps.includes(key))
+      .forEach(key => {
+        const value = props[key]
+        if (value !== undefined) setPixiValue(instance, key, value)
+        else if (
+          typeof instance[key] !== 'undefined' &&
+          PIXI_INSTANCE_DEFAULTS[key]
+        ) {
+          // prop is undefined, but maybe we have a default for it
+          setPixiValue(instance, key, PIXI_INSTANCE_DEFAULTS[key])
+        } else {
+          console.warn(
+            `Prop ${key} with value ${value} was not applied to instance`,
+            instance
+          )
+        }
+      })
+  }
 }
 
 const diffProps = (element, type, oldProps, newProps) => {
-  let updatePayload = {}
-  Object.keys(oldProps).forEach(key => {
-    if (key === 'children') return
-    if(!newProps.hasOwnProperty(key)){ // eslint-disable-line
-      updatePayload[key] = null // prop that disappeared
-    }
-  })
+  let updatePayload = { behavior: newProps.behavior || {} } // behavior is a default prop and I don't know yet where to define it
+  Object.keys(oldProps)
+    .filter(key => !filteredProps.includes(key))
+    .forEach(key => {
+      if(!newProps.hasOwnProperty(key)){ // eslint-disable-line
+        updatePayload[key] = null // prop that disappeared
+      }
+    })
 
-  Object.keys(newProps).forEach(key => {
-    if (key === 'children') return
-    const value = newProps[key]
+  Object.keys(newProps)
+    .filter(key => !filteredProps.includes(key))
+    .forEach(key => {
+      if (filteredProps.includes(key)) return
+      const value = newProps[key]
     if(!oldProps.hasOwnProperty(key) || value !== oldProps[key]){ // eslint-disable-line
-      updatePayload[key] = newProps[key] // new prop or changed prop
-    }
-  })
-  // console.log(updatePayload)
+        updatePayload[key] = newProps[key] // new prop or changed prop
+      }
+    })
   if (!Object.keys(updatePayload).length) return null
   return updatePayload
 }
 
 const appendChild = (parent, child) => {
-  // console.log(parent) // TODO remove
   parent.addChild(child)
 }
 
@@ -113,7 +122,6 @@ const hostConfig = {
   finalizeInitialChildren: returnFalse,
   createInstance: (type, props) => {
     let instance
-
     switch (type) {
       case TYPES.CONTAINER:
         instance = new PIXI.Container()
@@ -126,6 +134,16 @@ const hostConfig = {
         break
       case TYPES.TEXT:
         instance = new PIXI.Text(props.text, props.style, props.canvas)
+        break
+      case TYPES.CUSTOM:
+        invariant(
+          props.type || props.behavior.create,
+          `Custom component requires either type prop or behavior create function`
+        )
+        instance =
+          props.behavior && props.behavior.create
+            ? props.behavior.create()
+            : new PIXI[props.type]()
         break
       default:
         instance = null
@@ -169,6 +187,13 @@ export default (element, containerTag, callback, parent) => {
     root = Reconciler.createContainer(containerTag)
     roots.set(containerTag, root)
   }
+
+  Reconciler.injectIntoDevTools({
+    findFiberByHostInstance: Reconciler.findFiberByHostInstance,
+    bundleType: process.env.NODE_ENV === 'development' ? 1 : 0,
+    version: pkg.version,
+    rendererPackageName: pkg.name,
+  })
 
   Reconciler.updateContainer(element, root, parent, callback)
 

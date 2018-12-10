@@ -3,4 +3,5 @@ export const TYPES = {
   GRAPHICS: 'Graphics',
   SPRITE: 'Sprite',
   TEXT: 'Text',
+  CUSTOM: 'Custom',
 }

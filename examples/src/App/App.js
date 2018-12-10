@@ -6,6 +6,7 @@ import ExampleList from '../ExampleList'
 
 import BunnyExample from '../BunnyExample'
 import ContainerExample from '../ContainerExample'
+import CustomExample from '../CustomExample'
 import Stats from '../Stats'
 
 const examples = [
@@ -18,6 +19,11 @@ const examples = [
     name: 'Container',
     slug: 'container',
     component: ContainerExample,
+  },
+  {
+    name: 'Custom',
+    slug: 'custom',
+    component: CustomExample,
   },
 ]
 

@@ -9,3 +9,4 @@ export const Container = TYPES.CONTAINER
 export const Graphics = TYPES.GRAPHICS
 export const Sprite = TYPES.SPRITE
 export const Text = TYPES.TEXT
+export const Custom = TYPES.CUSTOM
