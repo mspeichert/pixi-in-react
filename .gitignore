@@ -1,6 +1,7 @@
 .DS_STORE
 node_modules
 *~
+compiled/
 dist/
 coverage/
 .module-cache

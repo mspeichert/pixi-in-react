@@ -5,7 +5,7 @@
   "dependencies": {
     "animated": "^0.2.2",
     "babel-eslint": "9.0.0",
-    "pixi-in-react": "0.0.4",
+    "pixi-in-react": "^0.0.6",
     "pixi-layers": "^0.1.9",
     "pixi.js": "4.8.3",
     "react": "^16.7.0-alpha.2",

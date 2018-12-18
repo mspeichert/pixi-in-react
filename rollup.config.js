@@ -12,7 +12,7 @@ const visualizer = require('rollup-plugin-visualizer')
 const isProd = env => env === 'production'
 
 const config = (env, format) => ({
-  input: 'src/index.js',
+  input: 'compiled/index.js',
   output: {
     file: `./dist/pixi-in-react.${format}.${env}.js`,
     name: 'PixiInReact',

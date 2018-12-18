@@ -1,12 +1,12 @@
 {
   "./dist/pixi-in-react.cjs.production.js": {
-    "bundled": 556284,
-    "minified": 202265,
-    "gzipped": 59197
+    "bundled": 560495,
+    "minified": 205358,
+    "gzipped": 59757
   },
   "./dist/pixi-in-react.umd.production.js": {
-    "bundled": 580477,
-    "minified": 194170,
-    "gzipped": 57471
+    "bundled": 609072,
+    "minified": 195014,
+    "gzipped": 57661
   }
 }

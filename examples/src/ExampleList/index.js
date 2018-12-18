@@ -1,29 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-
-const propTypes = {
-  examples: PropTypes.arrayOf(
-    PropTypes.shape({
-      component: PropTypes.func.isRequired,
-      name: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    })
-  ),
-};
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 function ExampleList({ examples }) {
   return (
-    <ul>
+    <div>
       {examples.map(example => (
-        <li key={example.slug}>
+        <div key={example.slug}>
           <Link to={`/${example.slug}`}>{example.name}</Link>
-        </li>
+        </div>
       ))}
-    </ul>
-  );
+    </div>
+  )
 }
 
-ExampleList.propTypes = propTypes;
-
-export default ExampleList;
+export default ExampleList
