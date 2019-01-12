@@ -28,7 +28,9 @@ const Stage: React.FunctionComponent<StageProps> = ({
     )
 
     return () => {
-      app!.destroy()
+      if (app) {
+        app.destroy()
+      }
     }
   }, [])
 
