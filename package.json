@@ -1,6 +1,6 @@
 {
   "name": "pixi-in-react",
-  "version": "0.0.7-alpha.2",
+  "version": "0.0.7-alpha.3",
   "description": "PixiJS as React components",
   "author": "Mikolaj Speuchert",
   "license": "MIT",

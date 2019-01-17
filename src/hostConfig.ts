@@ -162,9 +162,16 @@ export const prepareUpdate = (
   oldProps: PixiProps,
   newProps: PixiProps
 ): null | object => {
+  if (type === TYPES.CUSTOM) {
+    // So we don't interefere in props if this is the custom type
+    // Therefore custom types are less optimised (duh)
+    return newProps
+  }
+
   let updatePayload: PixiProps = {
     behavior: (newProps.behavior as Behavior) || {},
   } // behavior is a default prop and I don't know yet where to define it
+
   Object.keys(oldProps)
     .filter(key => !filteredProps.includes(key))
     .forEach(key => {
